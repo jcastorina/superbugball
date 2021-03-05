@@ -1,0 +1,28 @@
+{
+  "metadata":{
+      "position":505,
+      "type":"BufferGeometry",
+      "generator":"io_three",
+      "version":3
+  },
+  "data":{
+      "attributes":{
+          "position":{
+              "itemSize":3,
+              "type":"Uint16Array",
+              "array":[
+                       0,0,0,
+                       1,1,0,
+                       0,1,0,
+                       1,0,0
+                    ]
+          }
+      },
+      "index":{
+          "itemSize":1,
+          "type": "Uint16Array",
+      "array":   [0,2,1,
+                  1,2,3]
+      }
+  }
+}

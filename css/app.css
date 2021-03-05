@@ -1,14 +1,17 @@
 body {
   background: linear-gradient(#123456, #345678);
-  height: 100vh;
   margin: 0;
+  height: 100vh;
 }
 
-/*canvas {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-}*/
+#canvas-container {
+  display: flex;
+  background-color: blanchedalmond;
+  height: 100%;
+  overflow: hidden;
+}
+
+canvas {
+  flex: 1;
+  position: relative;
+}
