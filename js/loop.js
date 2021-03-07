@@ -1,9 +1,11 @@
-const animate = function () {
+const animate = () => {
   stats.begin();
   requestAnimationFrame(animate);
   update();
   stats.end();
 
-  renderer.render(scene, camera);
+  if (game) {
+    renderer.render(scene, game.camera);
+  }
 };
 animate();

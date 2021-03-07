@@ -33,6 +33,10 @@ const me = {
   },
 };
 
+const game = {
+  camera: devCamera,
+};
+
 me.mouse.curr.x = 0;
 me.mouse.curr.y = 0;
 

@@ -1,27 +1,53 @@
 //*****************/
-//   Add Camera
+//   Add Skybox
 //
-const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
-camera.rotation.order = "YXZ";
-camera.position.y = 5;
-camera.rotateY(-Math.PI / 2);
-scene.add(camera);
+const loadSkybox = () => {
+  var path = "../assets/skyboxes/foodcourt_";
+  var format = ".png";
+  var urls = [
+    path + "xp" + format,
+    path + "xn" + format,
+    path + "yp" + format,
+    path + "yn" + format,
+    path + "zp" + format,
+    path + "zn" + format,
+  ];
+  var reflectionCube = new THREE.CubeTextureLoader().load(urls);
+  reflectionCube.format = THREE.RGBFormat;
+  scene.background = reflectionCube;
+  var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+  hemiLight.color.setHSL(0.6, 1, 0.6);
+  hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+  hemiLight.position.set(0, 500, 0);
+  scene.add(hemiLight);
+};
+
+loadSkybox();
+
 //*****************/
 
 //*****************/
 //   Add Player (Pathopper)
 //
-const player = new THREE.Object3D();
+window.player = new THREE.Object3D();
+const ball_mount = new THREE.Object3D();
+ball_mount.rotation.order = "YXZ";
+ball_mount.position.y = 3;
+
 const player_texture = new THREE.TextureLoader().load(
   "../assets/textures/pathopper1.png"
 );
-//const player_geometry = new THREE.PlaneBufferGeometry(8, 8);
-const player_material = new THREE.SpriteMaterial({
+const player_geometry = new THREE.PlaneBufferGeometry(6, 6);
+const player_material = new THREE.MeshBasicMaterial({
   map: player_texture,
   side: THREE.DoubleSide,
+  transparent: true,
 });
-const player_sprite = new THREE.Sprite(player_material);
-player_sprite.scale.set(4, 4, 4);
+window.player_sprite = new THREE.Mesh(player_geometry, player_material);
+player_sprite.position.y = 3;
+player_sprite.position.x = 2;
+player_sprite.position.z = -10;
+
 // vars
 player.isJumping = false;
 player.hasBall = true;
@@ -33,11 +59,25 @@ player.POWER = 2;
 player.BASE_SPEED = 0.5;
 player.BOOST_SPEED = 0.5;
 // position
-player.position.y = 2;
 player.rotation.order = "YXZ";
 player.add(player_sprite);
+player_sprite.add(ball_mount);
 scene.add(player);
-//player.add(camera);
+
+//*****************/
+
+//*****************/
+//   Add Player Cam Mount
+//
+window.cameraMount = new THREE.Object3D();
+cameraMount.rotation.order = "YXZ";
+cameraMount.position.y = 20;
+cameraMount.rotation.y = -Math.PI / 2;
+cameraMount.rotation.x = -0.5;
+
+cameraMount.add(playerCamera);
+scene.add(cameraMount);
+
 //*****************/
 
 //*****************/
@@ -67,11 +107,12 @@ const ball_texture = new THREE.TextureLoader().load(
 );
 const ball_geometry = new THREE.SphereGeometry(0.3, 32, 32);
 const ball_material = new THREE.MeshBasicMaterial({ map: ball_texture });
-window.ball = new THREE.Mesh(ball_geometry, ball_material);
+const ball = new THREE.Mesh(ball_geometry, ball_material);
 ball.isHeld = true;
 ball.isFalling = true;
 ball.isShot = false;
 ball.fallAcceleration = 0;
+ball.scale.set(3, 3, 3);
 scene.add(ball);
 const launchVec = new THREE.Vector3(0, 0, 0);
 const ballWorldMat = new THREE.Matrix4();
@@ -97,17 +138,17 @@ const backboard_texture = new THREE.TextureLoader().load(
 const backboard_geometry = new THREE.PlaneBufferGeometry(10, 10);
 const backboard_material = new THREE.MeshBasicMaterial({
   map: backboard_texture,
-  //side: THREE.DoubleSide,
+  side: THREE.DoubleSide,
   transparent: true,
 });
-window.backboard = new THREE.Mesh(backboard_geometry, backboard_material);
+const backboard = new THREE.Mesh(backboard_geometry, backboard_material);
 backboard.rotateY(-Math.PI / 2);
 backboard.scale.setX(1.3);
 backboard.position.x = -11.4;
 backboard.position.y = 10;
 const hoop_geometry = new THREE.TorusGeometry(1.5, 0.1, 8, 24);
 const hoop_material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-window.hoop = new THREE.Mesh(hoop_geometry, hoop_material);
+const hoop = new THREE.Mesh(hoop_geometry, hoop_material);
 hoop.rotateX(-Math.PI / 2);
 hoop.position.x = -14;
 hoop.position.y = 7;
