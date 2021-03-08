@@ -1,5 +1,7 @@
-const update = () => {
+const update = (delta) => {
   if (game.camera.name === "devCamera") {
+    let DEV_CAM_SPEED = 0.5 * delta;
+
     devCamera.rotation.y = -me.mouse.curr.x;
     devCamera.rotation.x = -me.mouse.curr.y;
 
@@ -32,31 +34,26 @@ const update = () => {
     ball.rotation.y += 0.01;
 
     //ball_mount.rotation.y = -me.mouse.curr.x;
-    // ball_mount.rotation.x = -me.mouse.curr.y;
+    //ball_mount.rotation.x = -me.mouse.curr.y;
 
     if (player.hasBall) {
-      ball_mount.add(ball);
-      ball.position.set(1.5, 0, 0);
-      ball.fallAcceleration = 0;
-      ball.isFalling = false;
-      ball.isShot = false;
       if (me.mouse.down) {
         ball.position.z = 0;
         ballWorldMat.copy(ball.matrixWorld);
-        ball_mount.remove(ball);
+        player.remove(ball);
         player.hasBall = false;
         ball.isHeld = false;
         ball.isShot = true;
         scene.add(ball);
         ball.applyMatrix4(ballWorldMat);
         ball.scale.set(3, 3, 3);
-        ball_mount.getWorldDirection(launchVec);
+        ball.getWorldDirection(launchVec);
         launchVec.negate();
         launchVec.normalize();
         launchVec.multiplyScalar(player.POWER);
       }
     }
-
+    //console.log(ball.position, ball_mount.position, player.position);
     if (!ball.isHeld) {
       if (ball.isShot) {
         //backboard collision
@@ -82,10 +79,13 @@ const update = () => {
         launchVec.set(0, 0, 0);
       }
 
-      if (player.position.distanceTo(ball.position) < 2) {
+      if (player.position.distanceTo(ball.position) < 4) {
         ball.isHeld = true;
         player.hasBall = true;
         ball.position.x = 1.5;
+        ball.fallAcceleration = 0;
+        ball.isFalling = false;
+        ball.isShot = false;
         player.add(ball);
       }
     }
@@ -115,23 +115,24 @@ const update = () => {
       }
     }
 
-    let SPEED = player.BASE_SPEED + player.isBoosted * player.BOOST_SPEED;
+    let SPEED =
+      player.BASE_SPEED * delta + player.isBoosted * player.BOOST_SPEED;
 
-    if (me.keyboard[87]) {
-      //w
-      player.position.x += SPEED;
-    }
-    if (me.keyboard[65]) {
-      //a
-      player.position.z -= SPEED;
-      player_sprite.rotation.y = -Math.PI / 2;
-    }
     if (me.keyboard[83]) {
       //s
-      player.position.x -= SPEED;
+      player.position.x += SPEED;
     }
     if (me.keyboard[68]) {
       //d
+      player.position.z -= SPEED;
+      player_sprite.rotation.y = -Math.PI / 2;
+    }
+    if (me.keyboard[87]) {
+      //w
+      player.position.x -= SPEED;
+    }
+    if (me.keyboard[65]) {
+      //a
       player.position.z += SPEED;
       player_sprite.rotation.y = Math.PI / 2;
     }

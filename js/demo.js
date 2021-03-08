@@ -30,9 +30,6 @@ loadSkybox();
 //   Add Player (Pathopper)
 //
 window.player = new THREE.Object3D();
-const ball_mount = new THREE.Object3D();
-ball_mount.rotation.order = "YXZ";
-ball_mount.position.y = 3;
 
 const player_texture = new THREE.TextureLoader().load(
   "../assets/textures/pathopper1.png"
@@ -44,9 +41,14 @@ const player_material = new THREE.MeshBasicMaterial({
   transparent: true,
 });
 window.player_sprite = new THREE.Mesh(player_geometry, player_material);
+player_sprite.rotation.order = "ZYX";
 player_sprite.position.y = 3;
 player_sprite.position.x = 2;
 player_sprite.position.z = -10;
+player_sprite.rotation.z = Math.PI / 2;
+player_sprite.rotation.y = Math.PI / 2;
+//player_sprite.rotation.x = Math.PI / 2;
+//player_sprite.rotation.y = -Math.PI / 2;
 
 // vars
 player.isJumping = false;
@@ -61,9 +63,8 @@ player.BOOST_SPEED = 0.5;
 // position
 player.rotation.order = "YXZ";
 player.add(player_sprite);
-player_sprite.add(ball_mount);
+0;
 scene.add(player);
-
 //*****************/
 
 //*****************/
@@ -71,9 +72,11 @@ scene.add(player);
 //
 window.cameraMount = new THREE.Object3D();
 cameraMount.rotation.order = "YXZ";
-cameraMount.position.y = 20;
-cameraMount.rotation.y = -Math.PI / 2;
-cameraMount.rotation.x = -0.5;
+cameraMount.position.y = 55;
+//cameraMount.position.x = 65;
+cameraMount.rotation.y = Math.PI / 2;
+//cameraMount.rotation.x = -0.9;
+cameraMount.rotation.x = -Math.PI / 2;
 
 cameraMount.add(playerCamera);
 scene.add(cameraMount);

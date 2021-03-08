@@ -4,8 +4,8 @@ function handleResize() {
   renderer.setSize(w, h);
   renderer.domElement.style.width = "100%";
   renderer.domElement.style.height = "100%";
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
+  game.camera.aspect = w / h;
+  game.camera.updateProjectionMatrix();
 }
 
 function handleDocumentMouseMove(event) {

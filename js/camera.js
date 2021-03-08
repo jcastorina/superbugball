@@ -11,7 +11,7 @@ devCamera.name = "devCamera";
 //*****************/
 //   Add Player Camera
 //
-const playerCamera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
+window.playerCamera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
 playerCamera.name = "playerCamera";
 
 //*****************/

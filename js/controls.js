@@ -4,7 +4,6 @@
 //   GLOBAL SETTINGS
 //
 const MOUSE_SENSITIVITY = 200;
-const DEV_CAM_SPEED = 0.5;
 const GRAVITY = 0.05;
 //*****************/
 
@@ -34,7 +33,7 @@ const me = {
 };
 
 const game = {
-  camera: devCamera,
+  camera: playerCamera,
 };
 
 me.mouse.curr.x = 0;
